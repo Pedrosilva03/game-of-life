@@ -9,13 +9,14 @@ public class Main{
     private static int cellSize = 40;
 
     private static int[][] grid;
-    private static int population;
+    private static int population = 0;
     private static int generation = 0;
 
     private static Random random = new Random();
 
     private static JFrame jframe;
     private static JPanel jpanel;
+    private static JPanel statsPanel;
 
     private static void setupWindow(){
         jpanel = new JPanel(){
@@ -34,12 +35,28 @@ public class Main{
             }
         };
 
+        statsPanel = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.BLACK);
+                g.setFont(new Font("Arial", Font.BOLD, 16));
+                g.drawString("Generation = " + generation, 10, 20);
+                g.drawString("Population = " + population, 10, 40);
+            }
+        };
+
         jframe = new JFrame("Lock's Conway's Game of Life");
-        jframe.setSize(new Dimension((rows + 1) * cellSize, (cols + 1) * cellSize));
+        jframe.setSize(new Dimension(cols * cellSize + 50, rows * cellSize + 100));
         jframe.setLayout(new BorderLayout());
         jframe.setLocationRelativeTo(null);
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        statsPanel.setPreferredSize(new Dimension(600, 60));
+
         jframe.add(jpanel, BorderLayout.CENTER);
+        jframe.add(statsPanel, BorderLayout.SOUTH);
+
         jframe.setVisible(true);
     }
 
@@ -68,25 +85,19 @@ public class Main{
     }
 
     private static void drawgrid(){
-        for(int i = 0; i < grid.length; i++){
-            String line = "";
-            for(int j = 0; j < grid[0].length; j++){
-                line += grid[j][i] + " ";
-            }
-            System.out.println(line);
-        }
+        jpanel.repaint();
     }
 
     public static void main(String[] args) {
         grid = generateGrid();
 
-        setupWindow();
-
         population = getPopulation();
+
+        setupWindow();
         while(population > 0){
             drawgrid();
 
-            //grid = Automation.simulate(grid);
+            grid = Automation.simulate(grid);
 
             generation++;
             population = getPopulation();
