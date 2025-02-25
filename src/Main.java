@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main{
-    private static int rows = 10;
-    private static int cols = 10;
-    private static int cellSize = 40;
+    private static int rows = 80;
+    private static int cols = 80;
+    private static int cellSize = 10;
 
     private static int[][] grid;
     private static int population = 0;
@@ -25,10 +25,9 @@ public class Main{
                 super.paintComponent(g);
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < cols; j++) {
-                        int colorValue = (int) (grid[j][i] * 255);
+                        int colorValue = (grid[j][i] == 1) ? 0 : 255;
                         g.setColor(new Color(colorValue, colorValue, colorValue));
                         g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-                        g.setColor(Color.BLACK);
                         g.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
                     }
                 }
@@ -86,6 +85,7 @@ public class Main{
 
     private static void drawgrid(){
         jpanel.repaint();
+        statsPanel.repaint();
     }
 
     public static void main(String[] args) {
@@ -101,6 +101,14 @@ public class Main{
 
             generation++;
             population = getPopulation();
+
+            try{
+                Thread.sleep(100);
+            }
+            catch(InterruptedException e){
+                e.printStackTrace();
+            }
         }
+        System.exit(0);
     }
 }
