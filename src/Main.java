@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main{
-    private static int rows = 80;
-    private static int cols = 80;
-    private static int cellSize = 10;
+    private static int rows = 100;
+    private static int cols = 100;
+    private static int cellSize;
 
     private static int[][] grid;
     private static int population = 0;
@@ -23,12 +23,18 @@ public class Main{
             @Override
             protected void paintComponent(Graphics g){
                 super.paintComponent(g);
+
+                cellSize = Math.min(getWidth() / cols, (getHeight() - 60) / rows);
+
+                int xOffset = (getWidth() - (cols * cellSize)) / 2;
+                int yOffset = (getHeight() - (rows * cellSize)) / 2;
+
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < cols; j++) {
                         int colorValue = (grid[j][i] == 1) ? 0 : 255;
                         g.setColor(new Color(colorValue, colorValue, colorValue));
-                        g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-                        g.drawRect(j * cellSize, i * cellSize, cellSize, cellSize);
+                        g.fillRect(xOffset + j * cellSize, yOffset + i * cellSize, cellSize, cellSize);
+                        g.drawRect(xOffset + j * cellSize, yOffset + i * cellSize, cellSize, cellSize);
                     }
                 }
             }
@@ -45,8 +51,8 @@ public class Main{
             }
         };
 
-        jframe = new JFrame("Lock's Conway's Game of Life");
-        jframe.setSize(new Dimension(cols * cellSize + 50, rows * cellSize + 100));
+        jframe = new JFrame("My Conway's Game of Life");
+        jframe.setSize(new Dimension(600, 600));
         jframe.setLayout(new BorderLayout());
         jframe.setLocationRelativeTo(null);
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
