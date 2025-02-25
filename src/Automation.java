@@ -3,7 +3,9 @@ public class Automation {
         int neighbourCount = 0;
         for(int i = -1; i <= 1; i++){
             for(int j = -1; j <= 1; j++){
-                if(currentGeneration[cellX + i][cellY + j] == 1 && !(i == 0 && j == 0)){
+                int line = (cellX + i + currentGeneration.length) % currentGeneration.length;
+                int row = (cellY + j + currentGeneration[0].length) % currentGeneration[0].length;
+                if(currentGeneration[line][row] == 1 && !(i == 0 && j == 0)){
                     neighbourCount++;
                 }
             }
@@ -32,10 +34,6 @@ public class Automation {
 
         for(int i = 0; i < currentGeneration.length; i++){
             for(int j = 0; j < currentGeneration[0].length; j++){
-                if(i == 0 || i == currentGeneration.length - 1 || j == 0 || j == currentGeneration[0].length - 1){
-                    newGeneration[i][j] = currentGeneration[i][j];
-                    continue;
-                }
                 newGeneration[i][j] = checkRules(currentGeneration[i][j], countNeighbours(currentGeneration, i, j));
             }
         }
